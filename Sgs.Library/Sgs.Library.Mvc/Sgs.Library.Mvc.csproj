@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>454e5517-551f-433c-94f1-572da5003a21</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -474,8 +475,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
-    <PackageReference Include="Sameer.Shared" Version="1.2.0" />
-    <PackageReference Include="Sameer.Shared.Data" Version="1.3.0" />
+    <PackageReference Include="Sameer.Shared" Version="1.5.0" />
+    <PackageReference Include="Sameer.Shared.Data" Version="1.5.0" />
     <PackageReference Include="Sameer.Shared.Helpers.Mvc" Version="2.0.0" />
   </ItemGroup>
 
@@ -483,6 +484,10 @@
     <ProjectReference Include="..\Sgs.Library.BusinessLogic\Sgs.Library.BusinessLogic.csproj" />
     <ProjectReference Include="..\Sgs.Library.DataAccess\Sgs.Library.DataAccess.csproj" />
     <ProjectReference Include="..\Sgs.Library.Model\Sgs.Library.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Reports\" />
   </ItemGroup>
 
 </Project>

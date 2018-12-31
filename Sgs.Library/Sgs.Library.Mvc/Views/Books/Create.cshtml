@@ -7,8 +7,9 @@
 <h1>Create</h1>
 
 
-<form id="myForm" asp-action="create" method="post">
+<form asp-action="create" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
+    <input asp-for="Id" type="hidden" />
     <div class="row">
         <div class="col">
             <div class="form-group">
@@ -20,7 +21,7 @@
         <div class="col">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" placeholder="" autofocus />
+                <input asp-for="Name" class="form-control" placeholder="" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
         </div>
@@ -40,7 +41,7 @@
 </form>
 
 
-@section scripts{
+@section Scripts{
 
     <partial name="_ValidationScripts" />
 

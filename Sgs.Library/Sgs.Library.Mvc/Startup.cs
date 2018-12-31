@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sameer.Shared;
 using Sameer.Shared.Data;
 using Sameer.Shared.Helpers.Mvc;
 using Sgs.Library.BusinessLogic;
 using Sgs.Library.DataAccess;
+using Sgs.Library.Model;
 using Sgs.Library.Mvc.Services;
 
 namespace Sgs.Library.Mvc
@@ -35,12 +36,17 @@ namespace Sgs.Library.Mvc
             services.AddScoped<IRepository, Repository<LibraryDB>>();
 
             services.AddScoped<BooksManager>();
-            services.AddScoped<MapsManager>();
-            services.AddScoped<ReportsManager>();
-            services.AddScoped<PeriodicalsManager>();
-            services.AddScoped<BorrowingsManager>();
-            services.AddScoped<MapsTypesManager>();
-            services.AddScoped<ReportsTypesManager>();
+            //services.AddScoped<MapsManager>();
+            //services.AddScoped<ReportsManager>();
+            //services.AddScoped<GeneralManager<Report>>();
+            services.AddScoped(typeof(IDataManager<>),typeof(GeneralManager<>));
+            services.AddScoped(typeof(GeneralManager<>));
+
+            //services.AddScoped<PeriodicalsManager>();
+            //services.AddScoped<BorrowingsManager>();
+            //services.AddScoped<MapsTypesManager>();
+            //services.AddScoped<ReportsTypesManager>();
+
             services.AddSingleton<IAppInfo, AppInfoManager>();
 
             // Add application services.
@@ -58,6 +64,12 @@ namespace Sgs.Library.Mvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error/500");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseStaticFiles();

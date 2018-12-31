@@ -1,35 +1,64 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Sgs.Library.BusinessLogic;
-using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System;
-using Sgs.Library.Mvc.ViewModels;
+using Microsoft.Extensions.Logging;
+using Sameer.Shared;
+using Sameer.Shared.Data;
+using Sgs.Library.BusinessLogic;
 using Sgs.Library.Model;
+using Sgs.Library.Mvc.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Sgs.Library.Mvc.Controllers
 {
     public class BooksController : BaseController
     {
-        private readonly BooksManager _booksManager;
-        public BooksController(BooksManager booksManager, IMapper mapper, ILogger<BooksController> logger) : base(mapper, logger)
+        private readonly GeneralManager<Book> _booksManager;
+        public BooksController(GeneralManager<Book> booksManager, IMapper mapper, ILogger<BooksController> logger) : base(mapper, logger)
         {
             _booksManager = booksManager;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            //var booksList = await _booksManager.GetAllAsNoTrackingListAsync();
-            //return View(booksList);
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> IndexAsync()
+        {
+            var booksList = await _booksManager.GetAllAsNoTrackingListAsync();
+            return View(_mapper.Map<List<BookViewModel>>(booksList));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            try
+            {
+                var currentBook = await _booksManager.GetByIdAsync(id);
+
+                if (currentBook == null)
+                {
+                    return NotFound();
+                }
+
+                return View(_mapper.Map<BookViewModel>(currentBook));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            return View(new BookViewModel());
         }
 
         [HttpPost]
@@ -40,58 +69,193 @@ namespace Sgs.Library.Mvc.Controllers
             {
                 try
                 {
-                    var book = await _booksManager
-                    .GetAll(b => b.Code.Trim().ToUpper() == model.Code.Trim().ToUpper())
-                    .FirstOrDefaultAsync();
+                    _logger.LogInformation("Creating a new book !");
 
-                    if (book == null)
+                    var newData = _mapper.Map<Book>(model);
+
+                    using (_booksManager)
                     {
-                        var newBook =  _mapper.Map<Book>(model);
 
-                        var result = await _booksManager.InsertNewAsync(newBook);
+                        var saveResult = await _booksManager.InsertNewAsync(newData);
 
-                        if (result.Status == Sameer.Shared.Data.RepositoryActionStatus.Created)
+                        if (saveResult.Status == RepositoryActionStatus.Created)
                         {
-                            _logger.LogInformation("Book created.");
-                            return RedirectToAction(nameof(BooksController.Index));
+                            _logger.LogInformation("Book created successfully.");
+                            return RedirectToAction(nameof(Details),new { id = newData.Id});
                         }
                         else
                         {
-                                ModelState.AddModelError(string.Empty, "Error"); 
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Code", "Book code is alreadey exist !!");
+                            _logger.LogWarning("Could not save new book to the database !");
+                            ModelState.AddModelError(string.Empty, "Save error please try again later !");
+                        } 
+
                     }
 
+                }
+                catch (ValidationException ex)
+                {
+                    _logger.LogWarning($"validation exception while save new book : {ex.ValidationResult.ErrorMessage}");
+                    ModelState.AddModelError("", ex.ValidationResult.ErrorMessage);
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError($"Throw exception while save new book : {ex}");
                     ModelState.AddModelError("", "Error happend");
                 }
             }
+
             return View(model);
         }
 
-        [AcceptVerbs("Get", "Post")]
-        public async Task<IActionResult> VerifyCode(string code, int id = 0)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
             try
             {
-                var book = await _booksManager
-                    .GetAll(b => b.Code.Trim().ToUpper() == code.Trim().ToUpper())
-                    .FirstOrDefaultAsync();
-                if (book != null && book.Id != id)
+                var currentBook = await _booksManager.GetByIdAsync(id);
+
+                if (currentBook == null)
                 {
-                    return Json($"Sorry book code - {code} is already registered !");
+                    return NotFound();
                 }
-                return Json(true);
+
+                return View(_mapper.Map<BookViewModel>(currentBook));
             }
             catch (Exception)
             {
-                return Json("validation error ...!!");
+                throw;
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id,BookViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _logger.LogInformation($"Updating book with id of {id}");
+
+                    using (_booksManager)
+                    {
+                        var currentData = await _booksManager.GetByIdAsync(id);
+                        if (currentData == null)
+                        {
+                            _logger.LogWarning($"Can't find book with id of {id}");
+                            return NotFound();
+                        }
+
+                        _mapper.Map(model, currentData);
+
+                        var updateResult = await _booksManager.UpdateItemAsync(currentData);
+                        if (updateResult.Status == RepositoryActionStatus.Updated)
+                        {
+                            _logger.LogInformation("Book updated successfully.");
+                            return RedirectToAction(nameof(Details),new { id });
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Could not update book to the database !");
+                            ModelState.AddModelError(string.Empty, "Update error please try again later !");
+                        }
+                    }
+                }
+                catch (ValidationException ex)
+                {
+                    _logger.LogWarning($"validation exception while edit book : {ex.ValidationResult.ErrorMessage}");
+                    ModelState.AddModelError("", ex.ValidationResult.ErrorMessage);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Throw exception while edit book : {ex}");
+                    ModelState.AddModelError("", "Error happend");
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmDelete(int id)
+        {
+            try
+            {
+                var currentBook = await _booksManager.GetByIdAsync(id);
+
+                if (currentBook == null)
+                {
+                    return NotFound();
+                }
+
+                return View(_mapper.Map<BookViewModel>(currentBook));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"Deleting book with id of {id}");
+
+                using (_booksManager)
+                {
+                    var currentData = await _booksManager.GetByIdAsync(id);
+                    if (currentData == null)
+                    {
+                        _logger.LogWarning($"Can't find book with id of {id}");
+                        return NotFound();
+                    }
+
+                    var deleteResult = await _booksManager.DeleteItemAsync(currentData.Id);
+                    if (deleteResult.Status == RepositoryActionStatus.Deleted)
+                    {
+                        _logger.LogInformation("Book deleted successfully.");
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Could not delete book from the database !");
+                        return BadRequest();
+                    }
+
+                }
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning($"validation exception while delete book : {ex.ValidationResult.ErrorMessage}");
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Throw exception while delete book : {ex}");
+                throw ex;
+            }
+        }
+
+        //[AcceptVerbs("Get", "Post")]
+        //public async Task<IActionResult> VerifyCode(string code, int id = 0)
+        //{
+        //    try
+        //    {
+        //        var book = await _booksManager.GetBookByCode(code);
+
+        //        if (book != null && book.Id != id)
+        //        {
+        //            return Json($"Sorry book code - {code} is already registered !");
+        //        }
+        //        return Json(true);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Json("validation error ...!!");
+        //    }
+        //}
+
     }
 }
