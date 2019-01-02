@@ -1,4 +1,4 @@
-﻿
+﻿@model List<BookViewModel>
 @{
     ViewData["Title"] = "Books";
 }
@@ -10,3 +10,7 @@
 
 </div>
 
+@foreach (var books in Model)
+{
+<h1>@books.Code</h1>
+}

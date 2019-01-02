@@ -8,6 +8,7 @@ namespace Sgs.Library.Mvc.ViewModels
         public LibraryMappingProfile()
         {
             CreateMap<Book, BookViewModel>().ReverseMap();
+            CreateMap<Report, ReportViewModel>().ReverseMap();
         }
     }
 }

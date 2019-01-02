@@ -1,7 +1,18 @@
-﻿
+﻿@model BookViewModel
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>book Details</h1>
+<hr />
+<h5>Isbn : @Model.Code</h5>
+<h5>Author : @Model.Author</h5>
+<h5>Name : @Model.Name</h5>
+<h5>Release Yaer : @Model.ReleaseYaer</h5>
+<h5>Price : @Model.Price</h5>
+<h5>Quantity : @Model.Quantity</h5>
+<h5>ShelfNumber : @Model.ShelfNumber</h5>
+<h5>RowNumber : @Model.RowNumber</h5>
+<h5>ColumnNumber : @Model.ColumnNumber</h5>
+
 
