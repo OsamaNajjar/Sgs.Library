@@ -1,0 +1,12 @@
+﻿@model List<BookViewModel>
+
+@{
+    ViewData["Title"] = "IndexAsync";
+}
+
+<h1>IndexAsync</h1>
+
+@foreach (var books in Model)
+{
+    <h1>@books.Code</h1>
+}
