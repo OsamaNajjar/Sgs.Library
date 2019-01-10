@@ -26,7 +26,6 @@ namespace Sgs.Library.Mvc.Controllers
             return View();
         }
 
-        [HttpGet("IndexAsync")]
         public async Task<IActionResult> IndexAsync()
         {
             var booksList = await _booksManager.GetAllAsNoTrackingListAsync();
@@ -195,6 +194,7 @@ namespace Sgs.Library.Mvc.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -214,7 +214,7 @@ namespace Sgs.Library.Mvc.Controllers
                     if (deleteResult.Status == RepositoryActionStatus.Deleted)
                     {
                         _logger.LogInformation("Book deleted successfully.");
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(IndexAsync));
                     }
                     else
                     {

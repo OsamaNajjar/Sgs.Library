@@ -1,7 +1,59 @@
-﻿
+﻿@model BookViewModel
 @{
     ViewData["Title"] = "ConfirmDelete";
 }
 
-<h1>ConfirmDelete</h1>
+<div class="row fadeIn" style="margin:30px 30px 30px 30px">
+    <div class="col-md-6">
+        <i class="fas fa-trash-alt" style="font-size: 45px; color: #d10f0f;">
+            <span style="font-size:24pt;color:#d10f0f">  Delete Book</span></i>
+    </div>
 
+</div>
+<hr />
+
+<div class="card bg-light moveUp">
+    <div class="card-header" style="color:#d10f0f">
+        <i class="fa fa-trash-alt"></i> <b> Are you sure delete book ?</b>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <b>Book Title :</b>
+            </div>
+            <div class="col-md-4">
+                <span>@Model.Name</span>
+            </div>
+            <div class="col-md-2">
+                <b>Author :</b>
+            </div>
+            <div class="col-md-4">
+                <span>@Model.Author</span>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-2">
+                <b>Isbn :</b>
+            </div>
+            <div class="col-md-4">
+                <span>@Model.Code</span>
+            </div>
+            <div class="col-md-2">
+                <b>Release Yaer :</b>
+            </div>
+            <div class="col-md-4">
+                <span>@Model.ReleaseYaer</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <a asp-action="IndexAsync" class="btn btn-secondary"><i class="fas fa-ban"></i> Cancel</a>
+        <form asp-action="Delete" asp-route-id="@Model.Id" style="display:inline">
+            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i> Delete</button>
+        </form>
+
+    </div>
+</div>

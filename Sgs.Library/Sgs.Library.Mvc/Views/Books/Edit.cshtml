@@ -4,11 +4,23 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="row fadeIn" style="margin:30px 30px 30px 30px">
+    <div class="col-md-6">
+        <i class="far fa-edit" style="font-size: 45px; color: #585858;">
+            <span style="font-size:24pt;color:#585858">  Edit Book</span>
+        </i>
+    </div>
 
+</div>
 <hr />
-<div>
+
+<div class="card bg-light moveUp">
     <form asp-action="Edit" method="post">
+        <div class="card-header" style="color:#585858">
+            <i class="far fa-edit"></i> <b> Are you sure Edit book ?</b>
+        </div>
+
+        <div class="card-body">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input asp-for="Id" type="hidden" />
             <div class="row">
@@ -82,13 +94,17 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-info"><i class="fas fa-database"></i> Save </button>
-                <button id="resetBtn" type="reset" class="btn btn-danger"><i class="fas fa-ban"></i> Cancel</button>
+        <div class="card-footer">
+            <div>
+                <button id="resetBtn" type="reset" class="btn btn-secondary"><i class="fas fa-ban"></i> Cancel</button>
+                <button type="submit" class="btn btn-info"><i class="fas fa-database"></i>  Save   </button>
             </div>
+        </div>
     </form>
 </div>
+<br />
 
 @section Scripts {
 
@@ -101,7 +117,7 @@
             $(function () {
                  $("button:reset").on("click", function () {
 
-                    var url = '@Url.Action("Index")';
+                    var url = '@Url.Action("IndexAsync")';
                     window.location.href = url;
 
                 });
