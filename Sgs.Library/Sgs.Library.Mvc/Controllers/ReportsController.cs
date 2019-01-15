@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Sameer.Shared.Data;
 using Sgs.Library.BusinessLogic;
@@ -9,9 +10,20 @@ namespace Sgs.Library.Mvc.Controllers
 {
     public class ReportsController : GeneralMvcController<Report, ReportViewModel>
     {
-        public ReportsController(GeneralManager<Report> dataManager, IMapper mapper, ILogger<ReportsController> logger) 
+        private readonly GeneralManager<ReportType> _allTypesManager;
+
+        public ReportsController(GeneralManager<ReportType> allTypesManager ,GeneralManager<Report> dataManager, IMapper mapper, ILogger<ReportsController> logger) 
             : base("Report", dataManager, mapper, logger)
         {
+            this._allTypesManager = allTypesManager;
         }
+
+        protected override async Task<ReportViewModel> createObject()
+        {
+            var allTypes = await _allTypesManager.GetAllAsNoTrackingListAsync();
+            return new ReportViewModel { AllReportsTypes = allTypes };
+        }
+
+       
     }
 }

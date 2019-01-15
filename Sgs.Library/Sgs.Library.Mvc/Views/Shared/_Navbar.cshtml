@@ -4,7 +4,7 @@
     var appName = _appInfo.GetAppName();
 }
 
-<nav class="navbar navbar-expand-lg navbar-light">
+<nav class="navbar navbar-expand-xl">
     <a class="navbar-brand" asp-action="Index" asp-controller="Home" title="@appName">
         <img src="~/Images/library.png" width="30" height="30" class="d-inline-block align-top" alt="@appName">
         @appName
@@ -19,9 +19,23 @@
         <div class="navbar-nav mr-auto">
             <a is-active-controller class="nav-item nav-link" asp-controller="Home" asp-action="Index">Home</a>
             <a is-active-controller class="nav-item nav-link" asp-controller="Books" asp-action="IndexAsync">Books</a>
-            <a is-active-controller class="nav-item nav-link" asp-controller="Reports" asp-action="Index">Reports</a>
+            <a is-active-controller class="nav-item nav-link" asp-controller="Reports" asp-action="IndexAsync">Reports</a>
             <a is-active-controller class="nav-item nav-link" asp-controller="Maps" asp-action="Index">Maps</a>
             <a is-active-controller class="nav-item nav-link" asp-controller="Periodicals" asp-action="Index">Periodicals</a>
+
+            <div class="dropdown">
+               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                  data-toggle="dropdown" aria-expanded="false">
+                    Others
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" 
+                     style="background-color: #4c8a89;">
+                    <a is-active-controller class="nav-item nav-link" asp-controller="ReportsTypes" asp-action="IndexAsync">Reports Types</a>
+                    <div class="dropdown-divider"></div>
+                    <a is-active-controller class="nav-item nav-link" asp-controller="MapsTypes" asp-action="IndexAsync">Maps Types</a>
+                </div>
+            </div>
+
         </div>
         <span class="navbar-light">
             Najjar, Osama M

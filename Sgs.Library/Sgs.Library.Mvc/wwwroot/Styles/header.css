@@ -3,3 +3,27 @@
     background-image: linear-gradient(to right,#4c8a89,#8fdddb);
     color: white;
 }
+.navbar a{
+    color:white;
+}
+
+.navbar .navbar-nav a {
+    color: white;
+}
+.navbar .navbar-nav > .active {
+    color: #6bdbd8;
+}
+
+.navbar .navbar-nav > a:hover,
+.navbar .navbar-nav > a:focus {
+    color: #6bdbd8;
+}
+
+.navbar .navbar-nav > .dropdown > .dropdown-menu > .active {
+    color: #6bdbd8;
+}
+
+.navbar .navbar-nav > .dropdown > .dropdown-menu > a:hover,
+.navbar .navbar-nav > .dropdown > .dropdown-menu > a:focus {
+    color: #6bdbd8;
+}

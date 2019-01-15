@@ -32,5 +32,7 @@ namespace Sgs.Library.Mvc.ViewModels
         public string Note { get; set; }
 
         public string Status { get; set; }
+
+        public List<ReportType> AllReportsTypes { get; set; }
     }
 }

@@ -3,16 +3,88 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>book Details</h1>
+<div class="row fadeIn" style="margin:30px 30px 30px 30px">
+    <div class="col-md-6">
+        <i class="fas fa-info-circle" style="font-size: 45px; color: #539e9e;">
+            <span style="font-size:24pt;color:#539e9e">  Book Details</span>
+        </i>
+    </div>
+</div>
 <hr />
-<h5>Isbn : @Model.Code</h5>
-<h5>Author : @Model.Author</h5>
-<h5>Name : @Model.Name</h5>
-<h5>Release Yaer : @Model.ReleaseYaer</h5>
-<h5>Price : @Model.Price</h5>
-<h5>Quantity : @Model.Quantity</h5>
-<h5>ShelfNumber : @Model.ShelfNumber</h5>
-<h5>RowNumber : @Model.RowNumber</h5>
-<h5>ColumnNumber : @Model.ColumnNumber</h5>
+<div class="card card-body bg-light moveUp">
+    <div class="row">
+        <div class="col-md-2">
+            <b>Isbn :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.Code</span>
+        </div>
+        <div class="col-md-2">
+            <b>Author :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.Author</span>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-2">
+            <b>Name :</b>
+        </div>
+        <div class="col-md-10">
+            <span>@Model.Name</span>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-2">
+            <b>Release Yaer :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.ReleaseYaer</span>
+        </div>
+        <div class="col-md-2">
+            <b>Price :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.Price</span>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-2">
+            <b>Quantity :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.Quantity</span>
+        </div>
+        <div class="col-md-2">
+            <b>Shelf Number :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.ShelfNumber</span>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-2">
+            <b>Row Number :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.RowNumber</span>
+        </div>
+        <div class="col-md-2">
+            <b>Column Number :</b>
+        </div>
+        <div class="col-md-4">
+            <span>@Model.ColumnNumber</span>
+        </div>
+    </div>
+
+</div>
 
 

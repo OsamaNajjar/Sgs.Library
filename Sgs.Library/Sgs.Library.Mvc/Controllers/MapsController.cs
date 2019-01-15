@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using Sameer.Shared;
 using Sgs.Library.BusinessLogic;
 using Sgs.Library.Model;
 using Sgs.Library.Mvc.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sgs.Library.Mvc.Controllers
 {

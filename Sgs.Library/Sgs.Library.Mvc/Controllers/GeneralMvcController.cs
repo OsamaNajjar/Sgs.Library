@@ -139,7 +139,7 @@ namespace Sgs.Library.Mvc.Controllers
             return View();
         }
 
-        [HttpGet("IndexAsync")]
+        [HttpGet]
         public virtual async Task<IActionResult> IndexAsync()
         {
             try
@@ -173,9 +173,9 @@ namespace Sgs.Library.Mvc.Controllers
             }
         }
 
-        protected virtual async Task<M> createObject()
+        protected virtual async Task<VM> createObject()
         {
-            return await Task.FromResult(new M());
+            return await Task.FromResult(new VM());
         }
 
         [HttpGet]
